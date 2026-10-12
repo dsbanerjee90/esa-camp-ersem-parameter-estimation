@@ -1,0 +1,391 @@
+version: 6
+title: GOTM-ERSEM at L4
+location:
+  name: L4
+  latitude: 50.25
+  longitude: -4.2166666
+  depth: 50.0
+time:
+  start: 2003-02-01 00:30:00
+  stop: 2011-02-01 00:30:00
+  dt: 900.0
+grid:
+  nlev: 100
+  method: analytical
+  ddu: 2.0
+  ddl: 1.0
+  file:
+temperature:
+  method: file
+  constant_value: 15.0
+  file: relax/temp_L4_WOA_rlx.dat
+  column: 1
+  two_layer:
+    z_s: 30.0
+    t_s: 15.0
+    z_b: 40.0
+    t_b: 10.0
+  NN: 0.000256
+  relax:
+    tau: 2592000.0
+    tau_s: 2592000.0
+    tau_b: 2592000.0
+salinity:
+  method: file
+  constant_value: 35.0
+  file: relax/salt_L4_WOA_rlx.dat
+  column: 1
+  two_layer:
+    z_s: 30.0
+    s_s: 35.0
+    z_b: 40.0
+    s_b: 36.0
+  NN: 0.000256
+  relax:
+    tau: 2592000.0
+    tau_s: 2592000.0
+    tau_b: 2592000.0
+surface:
+  fluxes:
+    method: kondo
+    heat:
+      method: constant
+      constant_value: 0.0
+      file: heatflux.dat
+      column: 1
+    tx:
+      method: constant
+      constant_value: 0.0
+      file: momentumflux.dat
+      column: 1
+    ty:
+      method: constant
+      constant_value: 0.0
+      file: momentumflux.dat
+      column: 1
+  u10:
+    method: file
+    constant_value: 0.0
+    file: forcings/meteo_L4.dat
+    column: 1
+    scale_factor: 1
+  v10:
+    method: file
+    constant_value: 0.0
+    file: forcings/meteo_L4.dat
+    column: 2
+    scale_factor: 1
+  ssuv_method: absolute
+  airp:
+    method: file
+    constant_value: 0.0
+    file: forcings/meteo_L4.dat
+    column: 3
+    scale_factor: 100.0
+  airt:
+    method: file
+    constant_value: 0.0
+    file: forcings/meteo_L4.dat
+    column: 4
+  hum:
+    method: file
+    constant_value: 0.0
+    file: forcings/meteo_L4.dat
+    column: 5
+    type: dew_point
+  cloud:
+    method: file
+    constant_value: 0.0
+    file: forcings/meteo_L4.dat
+    column: 6
+  precip:
+    method: file
+    constant_value: 0.0
+    file: forcings/precip_L4.dat
+    column: 1
+    flux_impact: true
+  calc_evaporation: true
+  swr:
+    method: file
+    constant_value: 0.0
+    file: forcings/ssr_L4.dat
+    column: 1
+  longwave_radiation:
+    method: clark
+    file:
+    column: 1
+  albedo:
+    method: constant
+    constant_value: 0.0
+  roughness:
+    charnock: false
+    charnock_val: 1400.0
+    z0s_min: 0.02
+bottom:
+  h0b: 0.05
+light_extinction:
+  method: jerlov-iii
+  A:
+    method: constant
+    constant_value: 0.7
+    file:
+    column: 1
+  g1:
+    method: constant
+    constant_value: 0.4
+    file:
+    column: 1
+  g2:
+    method: constant
+    constant_value: 8.0
+    file:
+    column: 1
+turbulence:
+  turb_method: second_order
+  tke_method: tke
+  len_scale_method: dissipation
+  stab_method: schumann_gerz
+  turb_param:
+    cm0_fix: 0.5477
+    Prandtl0_fix: 0.74
+    cw: 100.0
+    compute_kappa: false
+    kappa: 0.4
+    compute_c3: true
+    Ri_st: 0.25
+    length_lim: true
+    galp: 0.53
+    const_num: 0.0005
+    const_nuh: 0.0005
+    k_min: 1.0e-06
+    eps_min: 1.0e-12
+    kb_min: 1.0e-10
+    epsb_min: 1.0e-14
+  generic:
+    gen_m: 1.0
+    gen_n: -0.67
+    cpsi1: 1.0
+    cpsi2: 1.22
+    cpsi3minus: 0.05
+    sig_kpsi: 0.8
+    sig_psi: 1.07
+  keps:
+    ce3minus: -0.4
+  my:
+    length: linear
+  scnd:
+    method: quasi_eq
+  iw:
+    alpha: 0.7
+mimic_3d:
+  ext_pressure:
+    type: velocity
+    dpdx:
+      method: file
+      constant_value: 0.0
+      file: forcings/pres_L4.dat
+      column: 2
+      tidal:
+        amp_1: 0.2429
+        phase_1: 32171.1
+        amp_2: 0.085
+        phase_2: 36650.0
+    dpdy:
+      method: file
+      constant_value: 0.0
+      file: forcings/pres_L4.dat
+      column: 3
+      tidal:
+        amp_1: 0.0734
+        phase_1: 14490.5
+        amp_2: 0.0257
+        phase_2: 19567.8
+    h:
+      method: file
+      constant_value: 1.0
+      file: forcings/pres_L4.dat
+      column: 1
+    period_1: 44714.0
+    period_2: 43200.0
+  zeta:
+    method: file
+    constant_value: 0.0
+    file: forcings/zeta_L4.dat
+    column: 1
+    tidal:
+      period_1: 44714.0
+      amp_1: 1.4287
+      phase_1: 28645.5
+      period_2: 43200.0
+      amp_2: 0.5
+      phase_2: 33243.4
+  w:
+    max:
+      method: off
+      constant_value: 0.0
+      file:
+      column: 1
+    height:
+      method: constant
+      constant_value: 0.0
+      file:
+      column: 1
+    adv_discr: superbee
+  int_press:
+    t_adv: false
+    s_adv: false
+    dtdx:
+      method: off
+      constant_value: 0.0
+      file:
+      column: 1
+    dtdy:
+      method: off
+      constant_value: 0.0
+      file:
+      column: 1
+    dsdx:
+      method: off
+      constant_value: 0.0
+      file:
+      column: 1
+    dsdy:
+      method: off
+      constant_value: 0.0
+      file:
+      column: 1
+o2:
+  scale_factor: 31.25
+fabm:
+  use: true
+  freshwater_impact: true
+  feedbacks:
+    shade: false
+    albedo: true
+    surface_drag: true
+  repair_state: true
+  configuration_method: yaml
+  input:
+    mole_fraction_of_carbon_dioxide_in_air:
+      method: constant
+      constant_value: 385.0
+      file:
+      column: 1
+    absorption_of_silt:
+      method: constant
+      constant_value: 0.07
+      file:
+      column: 1
+    bottom_stress:
+      method: constant
+      constant_value: 0.0
+      file:
+      column: 1
+    N3_n:                                            # nitrogen [mmol N/m^3]
+       method: file                                  # method [constant, file=from file; default=constant]
+       constant_value: 1.79769313+308                # value to use throughout the simulation [mmol N/m^3; default=0.0]
+       file: relax/nitr_L4_WOA_rlx.dat                        # path to file with series of profiles [default=]
+       column: 1                                     # index of column to read from [default=1]
+       relax_tau: 2592000.0                     # relaxation time scale [s; min=0.0; default=1.00000000E+15]
+       relax_tau_bot: 2592000.0                # relaxation time scale for bottom layer [s; min=0.0; default=1.00000000E+15]
+       relax_tau_surf: 2592000.0                # relaxation time scale for surface layer [s; min=0.0; default=1.00000000E+15]
+       thickness_bot: 0.0                            # thickness of bottom relaxation layer [m; min=0.0; default=0.0]
+       thickness_surf: 0.0   
+    N1_p:                                            # nitrogen [mmol N/m^3]
+       method: file                                  # method [constant, file=from file; default=constant]
+       constant_value: 1.79769313+308                # value to use throughout the simulation [mmol N/m^3; default=0.0]
+       file: relax/phos_L4_WOA_rlx.dat                        # path to file with series of profiles [default=]
+       column: 1                                     # index of column to read from [default=1]
+       relax_tau: 2592000.0                     # relaxation time scale [s; min=0.0; default=1.00000000E+15]
+       relax_tau_bot: 2592000.0                 # relaxation time scale for bottom layer [s; min=0.0; default=1.00000000E+15]
+       relax_tau_surf: 2592000.0                # relaxation time scale for surface layer [s; min=0.0; default=1.00000000E+15]
+       thickness_bot: 0.0                            # thickness of bottom relaxation layer [m; min=0.0; default=0.0]
+       thickness_surf: 0.0
+    N5_s:                                            # nitrogen [mmol N/m^3]
+       method: file                                  # method [constant, file=from file; default=constant]
+       constant_value: 1.79769313+308                # value to use throughout the simulation [mmol N/m^3; default=0.0]
+       file: relax/sili_L4_WOA_rlx.dat                        # path to file with series of profiles [default=]
+       column: 1                                     # index of column to read from [default=1]
+       relax_tau: 2592000.0                     # relaxation time scale [s; min=0.0; default=1.00000000E+15]
+       relax_tau_bot: 2592000.0                 # relaxation time scale for bottom layer [s; min=0.0; default=1.00000000E+15]
+       relax_tau_surf: 2592000.0                # relaxation time scale for surface layer [s; min=0.0; default=1.00000000E+15]
+       thickness_bot: 0.0                            # thickness of bottom relaxation layer [m; min=0.0; default=0.0]
+       thickness_surf: 0.0             
+    O2_o:
+      method: file
+      constant_value: 1.79769313+308
+      file: relax/oxyg_L4_WOA_rlx.dat
+      column: 1
+      relax_tau: 31536000.0
+      relax_tau_bot: 31536000.0
+      relax_tau_surf: 31536000.0
+      thickness_bot: 0.0
+      thickness_surf: 0.0
+buoyancy:
+  NN_ini: 0.0001
+eq_state:
+  method: jackett
+  form: full-pot
+  linear:
+    T0: 10.0
+    S0: 35.0
+    p0: 0.0
+    dtr0: -0.17
+    dsr0: 0.78
+restart:
+  load: false
+output:
+  result:
+    time_unit: day
+    time_step: 1
+    time_method: point
+    variables:
+    - source: P1_Chl
+      time_method: mean
+    - source: P2_Chl
+      time_method: mean
+    - source: P3_Chl
+      time_method: mean
+    - source: P4_Chl
+      time_method: mean
+    - source: N3_n
+      time_method: mean
+    - source: N1_p
+      time_method: mean
+    - source: N5_s
+      time_method: mean
+    - source: N4_n
+      time_method: mean
+    - source: O2_o
+      time_method: mean
+    - source: temp
+      time_method: mean
+    - source: salt
+      time_method: mean
+    - source: int_change_in_total_carbon
+    - source: int_change_in_total_nitrogen
+    - source: int_change_in_total_phosphorus
+    - source: int_change_in_total_silicate
+  L4_surface_daily_mean_16.06:
+    time_unit: day
+    time_step: 1
+    k_start: 100
+    time_method: point
+    variables:
+    - source: /*
+      time_method: mean
+    - source: int_change_in_total_carbon
+    - source: int_change_in_total_nitrogen
+    - source: int_change_in_total_phosphorus
+    - source: int_change_in_total_silicate
+  L4_bottom_daily_mean_16.06:
+    time_unit: day
+    time_step: 1
+    k_stop: 1
+    time_method: mean
+    variables:
+    - source: /*
+    - source: int_change_in_total_carbon
+    - source: int_change_in_total_nitrogen
+    - source: int_change_in_total_phosphorus
+    - source: int_change_in_total_silicate

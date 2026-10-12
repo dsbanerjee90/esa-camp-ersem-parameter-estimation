@@ -1,0 +1,134 @@
+salt	salinity	g/kg		lon=1,lat=1,z=100,time=-1	1	100
+temp	potential temperature	Celsius		lon=1,lat=1,z=100,time=-1	101	100
+N5_s	silicate silicate	mmol Si/m^3		lon=1,lat=1,z=100,time=-1	201	100
+N1_p	phosphate phosphorus	mmol P/m^3		lon=1,lat=1,z=100,time=-1	301	100
+N3_n	nitrate nitrogen	mmol N/m^3		lon=1,lat=1,z=100,time=-1	401	100
+O2_o	oxygen oxygen	mmol O_2/m^3		lon=1,lat=1,z=100,time=-1	501	100
+total_chlorophyll	total_chlorophyll	mg/m^3		lon=1,lat=1,z=100,time=-1	601	100
+instances_Z6_parameters_pu	assimilation efficiency	-		lon=1,lat=1,time=-1	701	1
+instances_Z6_parameters_sum	maximum specific uptake at reference temperature	1/d		lon=1,lat=1,time=-1	702	1
+instances_Z5_parameters_pu	assimilation efficiency	-		lon=1,lat=1,time=-1	703	1
+instances_Z5_parameters_sum	maximum specific uptake at reference temperature	1/d		lon=1,lat=1,time=-1	704	1
+instances_Z4_parameters_pu	assimilation efficiency	-		lon=1,lat=1,time=-1	705	1
+instances_Z4_parameters_sum	maximum specific uptake at reference temperature	1/d		lon=1,lat=1,time=-1	706	1
+instances_P4_parameters_srs	specific rest respiration at reference temperature	1/d		lon=1,lat=1,time=-1	707	1
+instances_P4_parameters_sum	maximum specific productivity at reference temperature	1/d		lon=1,lat=1,time=-1	708	1
+instances_P4_parameters_beta	photoinhibition parameter	mg C m^2/mg Chl/W/d		lon=1,lat=1,time=-1	709	1
+instances_P4_parameters_alpha	initial slope of PI-curve	mg C m^2/mg Chl/W/d		lon=1,lat=1,time=-1	710	1
+instances_P3_parameters_srs	specific rest respiration at reference temperature	1/d		lon=1,lat=1,time=-1	711	1
+instances_P3_parameters_sum	maximum specific productivity at reference temperature	1/d		lon=1,lat=1,time=-1	712	1
+instances_P3_parameters_beta	photoinhibition parameter	mg C m^2/mg Chl/W/d		lon=1,lat=1,time=-1	713	1
+instances_P3_parameters_alpha	initial slope of PI-curve	mg C m^2/mg Chl/W/d		lon=1,lat=1,time=-1	714	1
+instances_P2_parameters_srs	specific rest respiration at reference temperature	1/d		lon=1,lat=1,time=-1	715	1
+instances_P2_parameters_sum	maximum specific productivity at reference temperature	1/d		lon=1,lat=1,time=-1	716	1
+instances_P2_parameters_beta	photoinhibition parameter	mg C m^2/mg Chl/W/d		lon=1,lat=1,time=-1	717	1
+instances_P2_parameters_alpha	initial slope of PI-curve	mg C m^2/mg Chl/W/d		lon=1,lat=1,time=-1	718	1
+instances_P1_parameters_srs	specific rest respiration at reference temperature	1/d		lon=1,lat=1,time=-1	719	1
+instances_P1_parameters_sum	maximum specific productivity at reference temperature	1/d		lon=1,lat=1,time=-1	720	1
+instances_P1_parameters_beta	photoinhibition parameter	mg C m^2/mg Chl/W/d		lon=1,lat=1,time=-1	721	1
+instances_P1_parameters_alpha	initial slope of PI-curve	mg C m^2/mg Chl/W/d		lon=1,lat=1,time=-1	722	1
+u	x-velocity	m/s	/state	lon=1,lat=1,z=100,time=-1	723	100
+uo	x-velocity - old time step	m/s	/state	lon=1,lat=1,z=100,time=-1	823	100
+v	y-velocity	m/s	/state	lon=1,lat=1,z=100,time=-1	923	100
+vo	y-velocity - old time step	m/s	/state	lon=1,lat=1,z=100,time=-1	1023	100
+u_taubo	bottom friction velocity - old time step	m/s	/state	lon=1,lat=1,time=-1	1123	1
+xP	extra turbulence production	m2/s3	/state	lon=1,lat=1,z=100,time=-1	1124	100
+h	layer thickness	m	/state	lon=1,lat=1,z=100,time=-1	1224	100
+ho	layer thickness - old time step	m	/state	lon=1,lat=1,z=100,time=-1	1324	100
+num	turbulent diffusivity of momentum	m2/s	/state	lon=1,lat=1,zi=101,time=-1	1424	101
+nuh	turbulent diffusivity of heat	m2/s	/state	lon=1,lat=1,zi=101,time=-1	1525	101
+nus	turbulent diffusivity of salt	m2/s	/state	lon=1,lat=1,zi=101,time=-1	1626	101
+tke	turbulent kinetic energy	m2/s2	/state	lon=1,lat=1,zi=101,time=-1	1727	101
+tkeo	turbulent kinetic energy - old time step	m2/s2	/state	lon=1,lat=1,zi=101,time=-1	1828	101
+eps	energy dissipation rate	m2/s3	/state	lon=1,lat=1,zi=101,time=-1	1929	101
+total_silicate_ini	total_silicate at simulation start	mmol m-3	/state	lon=1,lat=1	2030	1
+total_phosphorus_ini	total_phosphorus at simulation start	mmol m-3	/state	lon=1,lat=1	2031	1
+total_nitrogen_ini	total_nitrogen at simulation start	mmol m-3	/state	lon=1,lat=1	2032	1
+total_carbon_ini	total_carbon at simulation start	mmol m-3	/state	lon=1,lat=1	2033	1
+N4_n	ammonium nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	2034	100
+O3_c	carbonate total dissolved inorganic carbon	mmol C/m^3	/state	lon=1,lat=1,z=100,time=-1	2134	100
+O3_bioalk	carbonate bioalkalinity	mmol/m^3	/state	lon=1,lat=1,z=100,time=-1	2234	100
+R1_c	labile dissolved organic matter carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	2334	100
+R1_n	labile dissolved organic matter nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	2434	100
+R1_p	labile dissolved organic matter phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	2534	100
+R2_c	semi-labile dissolved organic matter carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	2634	100
+R3_c	semi-refractory dissolved organic matter carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	2734	100
+R4_c	small-size pom carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	2834	100
+R4_n	small-size pom nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	2934	100
+R4_p	small-size pom phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	3034	100
+R6_c	medium-size pom carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	3134	100
+R6_n	medium-size pom nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	3234	100
+R6_p	medium-size pom phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	3334	100
+R6_s	medium-size pom silicate	mmol Si/m^3	/state	lon=1,lat=1,z=100,time=-1	3434	100
+R8_c	large-size pom carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	3534	100
+R8_n	large-size pom nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	3634	100
+R8_p	large-size pom phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	3734	100
+R8_s	large-size pom silicate	mmol Si/m^3	/state	lon=1,lat=1,z=100,time=-1	3834	100
+B1_c	bacteria carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	3934	100
+B1_n	bacteria nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	4034	100
+B1_p	bacteria phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	4134	100
+P1_c	diatoms carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	4234	100
+P1_n	diatoms nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	4334	100
+P1_p	diatoms phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	4434	100
+P1_Chl	diatoms chlorophyll a	mg/m^3	/state	lon=1,lat=1,z=100,time=-1	4534	100
+P1_s	diatoms silicate	mmol Si/m^3	/state	lon=1,lat=1,z=100,time=-1	4634	100
+P2_c	nanophytoplankton carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	4734	100
+P2_n	nanophytoplankton nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	4834	100
+P2_p	nanophytoplankton phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	4934	100
+P2_Chl	nanophytoplankton chlorophyll a	mg/m^3	/state	lon=1,lat=1,z=100,time=-1	5034	100
+P3_c	picophytoplankton carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	5134	100
+P3_n	picophytoplankton nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	5234	100
+P3_p	picophytoplankton phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	5334	100
+P3_Chl	picophytoplankton chlorophyll a	mg/m^3	/state	lon=1,lat=1,z=100,time=-1	5434	100
+P4_c	microphytoplankton carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	5534	100
+P4_n	microphytoplankton nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	5634	100
+P4_p	microphytoplankton phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	5734	100
+P4_Chl	microphytoplankton chlorophyll a	mg/m^3	/state	lon=1,lat=1,z=100,time=-1	5834	100
+Z4_c	mesozooplankton carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	5934	100
+Z5_c	microzooplankton carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	6034	100
+Z5_n	microzooplankton nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	6134	100
+Z5_p	microzooplankton phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	6234	100
+Z6_c	nanoflagellates carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	6334	100
+Z6_n	nanoflagellates nitrogen	mmol N/m^3	/state	lon=1,lat=1,z=100,time=-1	6434	100
+Z6_p	nanoflagellates phosphorus	mmol P/m^3	/state	lon=1,lat=1,z=100,time=-1	6534	100
+L2_c	calcite carbon	mg C/m^3	/state	lon=1,lat=1,z=100,time=-1	6634	100
+Q1_c	benthic dissolved organic matter carbon	mg C/m^2	/state	lon=1,lat=1,time=-1	6734	1
+Q1_p	benthic dissolved organic matter phosphorus	mmol P/m^2	/state	lon=1,lat=1,time=-1	6735	1
+Q1_n	benthic dissolved organic matter nitrogen	mmol N/m^2	/state	lon=1,lat=1,time=-1	6736	1
+Q6_c	benthic particulate organic matter carbon	mg C/m^2	/state	lon=1,lat=1,time=-1	6737	1
+Q6_p	benthic particulate organic matter phosphorus	mmol P/m^2	/state	lon=1,lat=1,time=-1	6738	1
+Q6_n	benthic particulate organic matter nitrogen	mmol N/m^2	/state	lon=1,lat=1,time=-1	6739	1
+Q6_s	benthic particulate organic matter silicate	mmol Si/m^2	/state	lon=1,lat=1,time=-1	6740	1
+Q6_pen_depth_c	benthic particulate organic matter penetration depth of carbon	m	/state	lon=1,lat=1,time=-1	6741	1
+Q6_pen_depth_n	benthic particulate organic matter penetration depth of nitrogen	m	/state	lon=1,lat=1,time=-1	6742	1
+Q6_pen_depth_p	benthic particulate organic matter penetration depth of phosphorus	m	/state	lon=1,lat=1,time=-1	6743	1
+Q6_pen_depth_s	benthic particulate organic matter penetration depth of silicate	m	/state	lon=1,lat=1,time=-1	6744	1
+Q7_c	benthic refractory matter carbon	mg C/m^2	/state	lon=1,lat=1,time=-1	6745	1
+Q7_p	benthic refractory matter phosphorus	mmol P/m^2	/state	lon=1,lat=1,time=-1	6746	1
+Q7_n	benthic refractory matter nitrogen	mmol N/m^2	/state	lon=1,lat=1,time=-1	6747	1
+Q7_pen_depth_c	benthic refractory matter penetration depth of carbon	m	/state	lon=1,lat=1,time=-1	6748	1
+Q7_pen_depth_n	benthic refractory matter penetration depth of nitrogen	m	/state	lon=1,lat=1,time=-1	6749	1
+Q7_pen_depth_p	benthic refractory matter penetration depth of phosphorus	m	/state	lon=1,lat=1,time=-1	6750	1
+Q17_c	benthic buried matter carbon	mg C/m^2	/state	lon=1,lat=1,time=-1	6751	1
+Q17_p	benthic buried matter phosphorus	mmol P/m^2	/state	lon=1,lat=1,time=-1	6752	1
+Q17_n	benthic buried matter nitrogen	mmol N/m^2	/state	lon=1,lat=1,time=-1	6753	1
+bL2_c	benthic calcite carbon	mg C/m^2	/state	lon=1,lat=1,time=-1	6754	1
+ben_col_D1m	benthic column depth of bottom interface of oxygenated layer	m	/state	lon=1,lat=1,time=-1	6755	1
+ben_col_D2m	benthic column depth of bottom interface of oxidized layer	m	/state	lon=1,lat=1,time=-1	6756	1
+K1_p	benthic phosphate phosphorus	mmol/m^2	/state	lon=1,lat=1,time=-1	6757	1
+K3_n	benthic nitrate nitrogen	mmol/m^2	/state	lon=1,lat=1,time=-1	6758	1
+K4_n	benthic ammonium nitrogen	mmol/m^2	/state	lon=1,lat=1,time=-1	6759	1
+K5_s	benthic silicate silicate	mmol/m^2	/state	lon=1,lat=1,time=-1	6760	1
+G2_o	benthic oxygen oxygen	mmol/m^2	/state	lon=1,lat=1,time=-1	6761	1
+G2_o_deep	benthic oxygen oxygen below zero isocline	mmol/m^2	/state	lon=1,lat=1,time=-1	6762	1
+G3_c	benthic dissolved inorganic carbon carbon	mmol/m^2	/state	lon=1,lat=1,time=-1	6763	1
+ben_nit_G4n	benthic nitrogen cycle dinitrogen gas	mmol N/m^2	/state	lon=1,lat=1,time=-1	6764	1
+H1_c	benthic aerobic bacteria carbon	mg C/m^2	/state	lon=1,lat=1,time=-1	6765	1
+H2_c	benthic anaerobic bacteria carbon	mg C/m^2	/state	lon=1,lat=1,time=-1	6766	1
+Y2_c	benthic deposit feeder carbon	mg C/m^2	/state	lon=1,lat=1,time=-1	6767	1
+Y3_c	benthic suspension feeder carbon	mg C/m^2	/state	lon=1,lat=1,time=-1	6768	1
+Y4_c	benthic meiofauna carbon	mg C/m^2	/state	lon=1,lat=1,time=-1	6769	1
+lon	longitude	degrees_east		lon=1	6770	1
+lat	latitude	degrees_north		lat=1	6771	1
+z	depth	m		lon=1,lat=1,z=100,time=-1	6772	100
+zi	interface depth	m		lon=1,lat=1,zi=101,time=-1	6872	101

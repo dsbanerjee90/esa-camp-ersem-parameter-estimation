@@ -1,0 +1,504 @@
+#!/usr/bin/env python3
+# Author: Deep S. Banerjee, Plymouth Marine Laboratory (PML).
+# Funded by the European Space Agency (ESA) under Climate and Marine Projection (CAMP) Project.
+# If you use the code mention our Zenodo repo.
+
+import logging
+import re
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import yaml
+import eatpy
+
+
+LOG = logging.getLogger(__name__)
+
+PARAM_PATTERN = re.compile(
+    r"^instances[/_]([PZ]\d+)[/_]parameters[/_]"
+    r"(alpha|beta|sum|srs|pu)$"
+)
+
+
+def _logit(x):
+    return np.log(x / (1.0 - x))
+
+
+def _read_centres(fabm_yaml="fabm.yaml"):
+    """
+    DEEP: Read the 22 standard ERSEM parameter values defining q=0.
+    """
+
+    cfg = yaml.safe_load(
+        Path(fabm_yaml).read_text(encoding="utf-8")
+    ) or {}
+
+    instances = cfg.get("instances", {})
+
+    centres = {}
+
+    for group in ("P1", "P2", "P3", "P4"):
+        for ptype in ("alpha", "beta", "sum", "srs"):
+
+            value = float(
+                instances[group]["parameters"][ptype]
+            )
+
+            if not np.isfinite(value) or value <= 0.0:
+                raise ValueError(
+                    f"Invalid ERSEM centre {group}.{ptype}={value}"
+                )
+
+            centres[(group, ptype)] = value
+
+    for group in ("Z4", "Z5", "Z6"):
+
+        value = float(
+            instances[group]["parameters"]["sum"]
+        )
+
+        if not np.isfinite(value) or value <= 0.0:
+            raise ValueError(
+                f"Invalid ERSEM centre {group}.sum={value}"
+            )
+
+        centres[(group, "sum")] = value
+
+        value = float(
+            instances[group]["parameters"]["pu"]
+        )
+
+        if not np.isfinite(value) or not (0.0 < value < 1.0):
+            raise ValueError(
+                f"Invalid ERSEM centre {group}.pu={value}"
+            )
+
+        centres[(group, "pu")] = value
+
+    if len(centres) != 22:
+        raise RuntimeError(
+            f"Expected 22 ERSEM centres, found {len(centres)}"
+        )
+
+    return centres
+
+
+def _prior_q_sd(
+    centre,
+    ptype,
+    n=200001,
+):
+    """
+    DEEP: Theoretical transformed-space SD implied by the common physical
+    initial prior:
+
+        theta ~ Uniform(0.7 theta0, 1.3 theta0)
+
+    This depends only on the common prior definition and theta0.
+
+    It is NOT estimated from a particular float or ensemble draw.
+    """
+
+    scale = np.linspace(
+        0.7,
+        1.3,
+        n,
+        dtype=float,
+    )
+
+    theta = centre * scale
+
+    if ptype == "pu":
+
+        if np.any(
+            (theta <= 0.0)
+            | (theta >= 1.0)
+        ):
+            raise ValueError(
+                "±30% physical prior for pu leaves (0,1)."
+            )
+
+        q = (
+            _logit(theta)
+            - _logit(centre)
+        )
+
+    else:
+
+        q = np.log(
+            theta / centre
+        )
+
+    return float(
+        np.std(q)
+    )
+
+
+def _read_observation_schedule(
+    obs_yaml="config/obs.yaml",
+):
+    """
+    DEEP: Sorted union of unique timestamps from every active observation
+    stream.
+
+    Therefore timing is determined automatically for each float.
+    """
+
+    cfg = yaml.safe_load(
+        Path(obs_yaml).read_text(encoding="utf-8")
+    ) or {}
+
+    streams = cfg.get("streams", [])
+
+    if not streams:
+        raise RuntimeError(
+            f"No observation streams found in {obs_yaml}"
+        )
+
+    times = set()
+
+    for stream in streams:
+
+        path = Path(stream["file"])
+
+        if not path.is_file():
+            raise FileNotFoundError(
+                f"Observation file not found: {path}"
+            )
+
+        with path.open(
+            "r",
+            encoding="utf-8",
+        ) as f:
+
+            for line in f:
+
+                line = line.strip()
+
+                if not line or line.startswith("#"):
+                    continue
+
+                fields = line.split()
+
+                if len(fields) < 2:
+                    continue
+
+                times.add(
+                    pd.Timestamp(
+                        f"{fields[0]} {fields[1]}"
+                    )
+                )
+
+    schedule = pd.DatetimeIndex(
+        sorted(times)
+    )
+
+    if len(schedule) == 0:
+        raise RuntimeError(
+            "No observation timestamps found."
+        )
+
+    return schedule
+
+
+class ParameterEvolution(eatpy.shared.Plugin):
+    """
+    DEEP: Generic temporally adaptive process for the 22 CAMP ERSEM
+    parameters in transformed q-space.
+
+    For parameter i:
+
+        q_next =
+            rho(dt) q_analysis
+            + innovation
+
+        rho(dt) =
+            exp(-dt / tau)
+
+        sigma_inf_i =
+            prior_fraction * sigma_q0_i
+
+        innovation_sd_i =
+            sigma_inf_i * sqrt(1 - rho(dt)^2)
+
+    sigma_q0_i is the theoretical q-space SD generated by the same
+    initial physical prior used for every experiment:
+
+        theta ~ U(0.7 theta0, 1.3 theta0)
+
+    """
+
+    def __init__(
+        self,
+        obs_yaml="config/obs.yaml",
+        fabm_yaml="fabm.yaml",
+        tau_days=None,
+        prior_fraction=None,
+        seed=42001,
+    ):
+        super().__init__()
+
+        self.obs_yaml = obs_yaml
+        self.fabm_yaml = fabm_yaml
+
+        self.tau_days = tau_days
+        self.prior_fraction = prior_fraction
+
+        self.seed = int(seed)
+
+        self.schedule = _read_observation_schedule(
+            obs_yaml
+        )
+
+        self.centres = _read_centres(
+            fabm_yaml
+        )
+
+        self.parameters = {}
+
+        self.current_time = None
+
+        self.rng = np.random.default_rng(
+            self.seed
+        )
+
+    def initialize(
+        self,
+        variables,
+        ensemble_size,
+    ):
+
+        self.ensemble_size = int(
+            ensemble_size
+        )
+
+        for name, info in variables.items():
+
+            match = PARAM_PATTERN.match(
+                name
+            )
+
+            if match is None:
+                continue
+
+            group = match.group(1)
+            ptype = match.group(2)
+
+            centre = self.centres[
+                (group, ptype)
+            ]
+
+            q_prior_sd = _prior_q_sd(
+                centre=centre,
+                ptype=ptype,
+            )
+
+            self.parameters[name] = {
+                "info": info,
+                "group": group,
+                "ptype": ptype,
+                "centre": centre,
+                "q_prior_sd": q_prior_sd,
+            }
+
+        if len(self.parameters) != 22:
+            raise RuntimeError(
+                "ParameterEvolution expected exactly 22 CAMP "
+                f"parameters, found {len(self.parameters)}"
+            )
+
+        LOG.info(
+            "ParameterEvolution initialized: "
+            "22 parameters; %d observation times; "
+            "tau_days=%s; prior_fraction=%s; seed=%d",
+            len(self.schedule),
+            self.tau_days,
+            self.prior_fraction,
+            self.seed,
+        )
+
+        for name, meta in self.parameters.items():
+
+            LOG.info(
+                "ParameterEvolution prior scale: "
+                "%s q_prior_sd=%.8f",
+                name,
+                meta["q_prior_sd"],
+            )
+
+    def before_analysis(
+        self,
+        time,
+        state,
+        iobs,
+        obs,
+        obs_sds,
+        filter,
+    ):
+
+        self.current_time = pd.Timestamp(
+            time
+        )
+
+    def after_analysis(
+        self,
+        state,
+    ):
+
+        if self.current_time is None:
+            raise RuntimeError(
+                "ParameterEvolution.after_analysis called "
+                "before before_analysis."
+            )
+
+        matches = np.where(
+            self.schedule == self.current_time
+        )[0]
+
+        if len(matches) != 1:
+            raise RuntimeError(
+                f"Assimilation time {self.current_time} "
+                "does not map uniquely to observation schedule."
+            )
+
+        index = int(
+            matches[0]
+        )
+
+        # No subsequent observation-constrained forecast after
+        # the final assimilation cycle.
+        if index >= len(self.schedule) - 1:
+
+            LOG.info(
+                "ParameterEvolution: final assimilation time %s; "
+                "no subsequent evolution.",
+                self.current_time,
+            )
+
+            return
+
+        next_time = self.schedule[
+            index + 1
+        ]
+
+        dt_days = float(
+            (
+                next_time
+                - self.current_time
+            )
+            / pd.Timedelta(days=1)
+        )
+
+        if (
+            not np.isfinite(dt_days)
+            or dt_days <= 0.0
+        ):
+            raise RuntimeError(
+                f"Invalid evolution dt={dt_days}"
+            )
+
+        if (
+            self.tau_days is None
+            or self.prior_fraction is None
+        ):
+            raise RuntimeError(
+                "ParameterEvolution requires both "
+                "tau_days and prior_fraction."
+            )
+
+        tau_days = float(
+            self.tau_days
+        )
+
+        prior_fraction = float(
+            self.prior_fraction
+        )
+
+        if tau_days <= 0.0:
+            raise ValueError(
+                "tau_days must be > 0."
+            )
+
+        if prior_fraction < 0.0:
+            raise ValueError(
+                "prior_fraction must be >= 0."
+            )
+
+        rho = float(
+            np.exp(
+                -dt_days / tau_days
+            )
+        )
+
+        temporal_factor = float(
+            np.sqrt(
+                1.0 - rho**2
+            )
+        )
+
+        for name, meta in self.parameters.items():
+
+            q = meta["info"]["data"]
+
+            if not np.all(
+                np.isfinite(q)
+            ):
+                raise RuntimeError(
+                    f"Non-finite q before evolution: {name}"
+                )
+
+            sigma_inf = (
+                prior_fraction
+                * meta["q_prior_sd"]
+            )
+
+            innovation_sd = (
+                sigma_inf
+                * temporal_factor
+            )
+
+            noise = self.rng.normal(
+                0.0,
+                1.0,
+                size=q.shape,
+            )
+
+            # Exact zero ensemble-mean innovation.
+            noise -= np.mean(
+                noise
+            )
+
+            noise_sd = np.std(
+                noise
+            )
+
+            if noise_sd <= 0.0:
+                raise RuntimeError(
+                    f"Zero stochastic spread generated for {name}"
+                )
+
+            # Exact requested finite-ensemble SD.
+            noise /= noise_sd
+
+            q[...] = (
+                rho * q
+                + innovation_sd * noise
+            )
+
+            if not np.all(
+                np.isfinite(q)
+            ):
+                raise RuntimeError(
+                    f"Non-finite q after evolution: {name}"
+                )
+
+        LOG.info(
+            "ParameterEvolution: %s -> %s | "
+            "dt=%.3f d rho=%.8f temporal_factor=%.8f",
+            self.current_time,
+            next_time,
+            dt_days,
+            rho,
+            temporal_factor,
+        )

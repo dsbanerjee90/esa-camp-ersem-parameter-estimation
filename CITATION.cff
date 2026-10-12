@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite this repository and its associated Zenodo release."
+type: software
+
+title: "ESA-CAMP: Ensemble Data Assimilation and Parameter Estimation in GOTM–ERSEM"
+
+authors:
+  - family-names: Banerjee
+    given-names: Deep Sankar
+    affiliation: Plymouth Marine Laboratory
+    orcid: https://orcid.org/0000-0002-5900-5792
+
+version: 1.0.0
+
+repository-code: https://github.com/dsbanerjee90/esa-camp-ersem-parameter-estimation
+
+keywords:
+  - marine ecosystem modelling
+  - parameter estimation
+  - ensemble data assimilation
+  - biogeochemistry
+  - GOTM
+  - ERSEM
+  - PDAF
+  - ESA-CAMP
+
+license: BSD-3-Clause

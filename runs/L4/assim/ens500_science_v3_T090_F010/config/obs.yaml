@@ -1,0 +1,15 @@
+streams:
+- var: O2_o
+  file: obs/l4_oxygen.dat
+- var: total_chlorophyll
+  file: obs/l4_chlorophyll.dat
+- var: N3_n
+  file: obs/l4_nitrate.dat
+- var: N1_p
+  file: obs/l4_phosphate.dat
+- var: N5_s
+  file: obs/l4_silicate.dat
+- var: temp
+  file: obs/l4_temperature.dat
+- var: salt
+  file: obs/l4_salinity.dat
